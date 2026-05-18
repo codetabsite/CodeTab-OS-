@@ -153,8 +153,13 @@ jobs:
             bash -c "
               set -e
 
+              # tzdata interaktif soru sormasın
+              export DEBIAN_FRONTEND=noninteractive
+              export TZ=Europe/Istanbul
+
               # Temel araçlar
               apt-get update -y
+              apt-get install -y tzdata
               apt-get install -y \
                 python3.11 python3.11-venv python3-pip \
                 libfuse2 libglib2.0-0 libgl1 \
@@ -242,35 +247,35 @@ jobs:
       - name: x86_64 artifact indir
         uses: actions/download-artifact@v4
         with:
-          name: MyApp-x86_64
+          name: CTBattery-x86_64
 
       - name: ARM64 artifact indir
         uses: actions/download-artifact@v4
         with:
-          name: MyApp-aarch64
+          name: CTBattery-aarch64
 
       - name: Release oluştur ve yükle
         uses: softprops/action-gh-release@v2
         with:
           tag_name: "build-${{ github.run_number }}"
-          name: "MyApp Build #${{ github.run_number }}"
+          name: "CTBattery Build #${{ github.run_number }}"
           body: |
             ## Otomatik Build
 
             | Platform | Dosya |
             |----------|-------|
-            | x86_64 (PC/Linux) | `MyApp-x86_64.AppImage` |
-            | aarch64 (Raspberry Pi 4/5) | `MyApp-aarch64.AppImage` |
+            | x86_64 (PC/Linux) | `CTBattery-x86_64.AppImage` |
+            | aarch64 (Raspberry Pi 4/5) | `CTBattery-aarch64.AppImage` |
 
             ### Kullanım
             ```bash
-            chmod +x MyApp-*.AppImage
-            ./MyApp-x86_64.AppImage        # PC'de
-            ./MyApp-aarch64.AppImage       # Raspberry Pi'de
+            chmod +x CTBattery-*.AppImage
+            ./CTBattery-x86_64.AppImage        # PC'de
+            ./CTBattery-aarch64.AppImage       # Raspberry Pi'de
             ```
           files: |
-            MyApp-x86_64.AppImage
-            MyApp-aarch64.AppImage
+            CTBattery-x86_64.AppImage
+            CTBattery-aarch64.AppImage
           draft: false
           prerelease: false
         env:
